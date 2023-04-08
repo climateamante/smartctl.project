@@ -27,14 +27,21 @@ uncorrected_errors() {
 running_drives=($(ps aux | grep '[s]martctl -t long' | awk '{print $12}' | sed 's/-d sat,//g'))
 
 # Append the running drives to the list of drives to check
+drives=(
+    "/dev/sdh1"
+    "/dev/sdi1"
+    "/dev/sdj1"
+    "/dev/sdk1"
+)
 
-drives=($(lsblk -rpo NAME,MOUNTPOINT | awk '$2!~/\/$|\/media\/cdrom/ {print ""$1}'))
+#drives=($(lsblk -rpo NAME,MOUNTPOINT | awk '$2!~/\/$|\/media\/cdrom/ {print ""$1}'))
 
 
 
 # Print table header
-printf "%-10s | %-15s | %-15s | %-20s | %-22s\n" "Device" "Self-Test" "Test Remaining" "BG Scans" "Uncorrected Errors"
-printf "%-10s-+-%-15s-+-%-15s-+-%-20s-+-%-22s\n" "----------" "---------------" "---------------" "--------------------" "----------------------"
+printf "%-10s | %-20s | %-15s | %-27s | %-22s\n" "Device" "Self-Test" "% Complete" "BG Scans" "Uncorrected Errors"
+printf "%-10s-+-%-20s-+-%-15s-+-%-27s-+-%-22s\n" "----------" "--------------------" "---------------" "---------------------------" "----------------------"
+
 
 # Loop through each drive
 for drive in "${drives[@]}"; do
